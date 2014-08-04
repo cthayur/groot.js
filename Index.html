@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title></title>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.0.0.js"></script>
+    <link href="Styles/styles.css" rel="stylesheet" />
+    <script src="Scripts/groot.js"></script>
+</head>
+<body>
+    <div id="contentDiv">
+        <input type="text" data-bind="value: year" placeholder="Year" />
+        <input type="text" data-bind="value: month" placeholder="Month" />
+        <button data-bind="click: refreshCal">Refresh</button>
+        
+        <div class="calWrapperHeaderDiv" data-bind="foreach: dayOfWeekArray">
+            <div class="calHeaderDay">
+                <div class="calDayText" data-bind="text: $data"></div>
+            </div>
+        </div>
+
+        <div id="dayList" class="calWrapperDiv" data-bind="foreach: monthArray">
+            <div class="calDay" data-bind="click: selectDate, css: isSelectedCss">
+                <div class="calDayText" data-bind="text: date, css: state"></div>
+            </div>
+        </div>
+
+        <div id="selectedDate"></div>
+    </div>
+</body>
+</html>

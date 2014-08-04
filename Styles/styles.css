@@ -1,0 +1,73 @@
+﻿.calWrapperHeaderDiv {
+    max-width: 215px;
+    border: 1px solid #808080;
+    border-bottom: none;
+    background-color: whitesmoke;
+    padding: 5px;
+
+}
+
+.calHeaderDay {
+    height: 30px;
+    width: 30px;
+    color: white;
+    display: inline-block;
+    margin-bottom: 2px;
+    margin-right: -3px;
+    background-color: #696969;
+}
+
+.calWrapperDiv {
+    max-width: 215px;
+    border: 1px solid #808080;
+    border-top:none;
+    background-color: whitesmoke;
+    padding: 5px;
+
+}
+
+.calDay {
+    height: 30px;
+    width: 30px;
+    color: black;
+    display: inline-block;
+    margin-bottom: 2px;
+    margin-right: -3px;
+    background-color: #e9e9e9;
+    cursor: pointer;
+}
+
+.calDay.selected {
+    background-color: #007ee6;
+    color: white;
+}
+
+.calDay.selected .calDayText{
+    background-color: #007ee6;
+    color: white;
+}
+
+.calDay:hover {
+    background-color: #007ee6;
+    color: white;
+}
+
+.calDay:hover .calDayText.active, .calDay:hover .calDayText.inactive {
+    background-color: #007ee6;
+    color: white;
+}
+
+.calDayText {
+    position: relative;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.calDayText.active {
+    color: black;
+}
+
+
+.calDayText.inactive {
+    color: #808080;
+}
