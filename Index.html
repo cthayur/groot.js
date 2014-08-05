@@ -8,24 +8,27 @@
     <script src="Scripts/groot.js"></script>
 </head>
 <body>
-    <div id="contentDiv">
-        <input type="text" data-bind="value: year" placeholder="Year" />
-        <input type="text" data-bind="value: month" placeholder="Month" />
-        <button data-bind="click: refreshCal">Refresh</button>
-        
-        <div class="calWrapperHeaderDiv" data-bind="foreach: dayOfWeekArray">
-            <div class="calHeaderDay">
-                <div class="calDayText" data-bind="text: $data"></div>
+
+    <input id="testInput" data-calendar />
+    
+    <script type="text/html" id="calTemplate">
+        <br />
+        <br />
+
+        <div class="calContainer">
+            <div data-bind="text: selectedDateString"></div>
+            <div class="calWrapperHeaderDiv" data-bind="foreach: dayOfWeekArray">
+                <div class="calHeaderDay">
+                    <div class="calDayText" data-bind="text: $data"></div>
+                </div>
+            </div>
+
+            <div id="dayList" class="calWrapperDiv" data-bind="foreach: monthArray">
+                <div class="calDay" data-bind="click: selectDate, css: isSelectedCss">
+                    <div class="calDayText" data-bind="text: date, css: state"></div>
+                </div>
             </div>
         </div>
-
-        <div id="dayList" class="calWrapperDiv" data-bind="foreach: monthArray">
-            <div class="calDay" data-bind="click: selectDate, css: isSelectedCss">
-                <div class="calDayText" data-bind="text: date, css: state"></div>
-            </div>
-        </div>
-
-        <div id="selectedDate"></div>
-    </div>
+    </script>
 </body>
 </html>

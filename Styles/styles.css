@@ -1,4 +1,7 @@
-﻿.calWrapperHeaderDiv {
+﻿.calContainer {
+    max-width: 225px;
+}
+.calWrapperHeaderDiv {
     max-width: 215px;
     border: 1px solid #808080;
     border-bottom: none;

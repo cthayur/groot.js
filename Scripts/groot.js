@@ -1,20 +1,37 @@
 ﻿(function ($, ko) {
     $(function () {
-        //$(document).on('DOMNodeInserted', function (e) {
-        //    if (e.target.id == 'test') {
-        //        alert('#test was inserted')
-        //    }
-        //});        
+        "use strict";
 
-        var getMonthDays,
-            test,
-            selectedDate = ko.observable(),
+        var getMonthArray,
+            calVm,            
+            currentElement,
+            isValidDate,
+            setUpVm,
+            monthList = {},
+            dayVm,
             dayOfWeekArray = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
+        (function () {            
+            monthList[1] = "Jan";
+            monthList[2] = "Feb";
+            monthList[3] = "Mar";
+            monthList[4] = "Apr";
+            monthList[5] = "May";
+            monthList[6] = "Jun";
+            monthList[7] = "Jul";
+            monthList[8] = "Aug";
+            monthList[9] = "Sep";
+            monthList[10] = "Oct";
+            monthList[11] = "Nov";
+            monthList[12] = "Dec";
+        })();
 
-        
 
-        getMonthDays = function (year, month) {
+        isValidDate = function (dateString) {
+            return !isNaN(Date.parse(dateString));
+        }
+
+        getMonthArray = function (year, month, parent) {
             "use strict";
 
             var i,
@@ -32,35 +49,7 @@
             daysPreviousMonth,
             getDaysInMonth,
             getPreviousMonthDays,
-            monthArray = [],
-            dayVm;
-
-            dayVm = function (date, month, year, isActive) {
-                var _self = {};
-                var _t = test;
-
-                _self.date = date;
-                _self.month = month;
-                _self.year = year;
-                _self.shortDate = "" + year + month + date;
-                _self.state = isActive ? 'active' : 'inactive';
-
-                _self.isSelectedCss = ko.computed(function () {
-                    return _self.shortDate === selectedDate() ? 'selected' : '';
-                });
-
-                _self.selectDate = function (data) {
-
-                    selectedDate(_self.shortDate);
-
-                    $('#selectedDate').text(_self.date);
-                    var _xx = _t;
-                };
-
-                
-
-                return _self;
-            };
+            monthArray = [];
 
             getDaysInMonth = function (year, month) {
                 return new Date(year, month, 0).getDate()
@@ -77,30 +66,88 @@
 
             //Last Month
             for (i = daysPreviousMonth - daysToAddbefore + 1; i <= daysPreviousMonth; i++)
-                monthArray.push(new dayVm(i, thisMonth - 1, (thisMonth === 1 ? lastYear : thisYear), false));
+                monthArray.push(new dayVm(i, thisMonth - 1, (thisMonth === 1 ? lastYear : thisYear), false, parent));
 
             //This Month
             for (i = 1; i <= daysThisMonth; i++)
-                monthArray.push(new dayVm(i, thisMonth, thisYear, true));
+                monthArray.push(new dayVm(i, thisMonth, thisYear, true, parent));
 
             //Next Month
             for (i = 1; i <= daysToAddAfter; i++)
-            monthArray.push(new dayVm(i, thisMonth + 1, (thisMonth === 12 ? nextYear : thisYear), false));
+                monthArray.push(new dayVm(i, thisMonth + 1, (thisMonth === 12 ? nextYear : thisYear), false, parent));
 
             return monthArray;
         };
 
-        test = {
+        calVm = {
             monthArray: ko.observableArray(),
-            dayOfWeekArray : dayOfWeekArray,
-            year: ko.observable(2014),
-            month: ko.observable(8),
-            refreshCal: function () {
-                this.monthArray(getMonthDays(this.year(), this.month()))
-            }
+            dayOfWeekArray: dayOfWeekArray,
+            selectedDateString: ko.observable(),
+            selectedShortDate: ko.observable()
         };
 
-        ko.applyBindings(test, $('#contentDiv')[0]);
+        dayVm = function (date, month, year, isActive, parent) {
+            var _self = {};
+
+            _self.date = date;
+            _self.month = month;
+            _self.year = year;
+            _self.shortDate = "" + year + month + date;
+            _self.state = isActive ? 'active' : 'inactive';
+
+            _self.isSelectedCss = ko.computed(function () {
+                return _self.shortDate === parent.selectedShortDate() ? 'selected' : '';
+            });
+
+            _self.selectDate = function (data) {
+                parent.selectedShortDate(_self.shortDate);
+                parent.selectedDateString(monthList[_self.month] + " " + _self.date + ", " + _self.year);
+
+                currentElement.val(_self.month + "/" + _self.date + "/" + _self.year);
+            };
+
+            return _self;
+        };
+
+        setUpVm = function (currentDate) {
+            var _monthArray = getMonthArray(currentDate.getFullYear(), currentDate.getMonth() + 1, calVm);
+            calVm.selectedShortDate("" + currentDate.getFullYear() + (currentDate.getMonth() + 1) + currentDate.getDate());
+            calVm.selectedDateString(monthList[(currentDate.getMonth() + 1)] + " " + currentDate.getDate() + ", " + currentDate.getFullYear());
+            calVm.monthArray(_monthArray);
+        };
+
+        $('input[data-calendar]').on('focus', function () {
+            if (!$('#contentDiv')[0]) {
+                var _currentElement = $(this),
+                _input = _currentElement.val(),
+                _date = _input && isValidDate(_input) ? new Date(_input) : new Date(),
+                _contentDiv = "<div id=\"contentDiv\" data-bind=\"template: {name:'calTemplate'}\"></div>";
+
+                $(this).after(_contentDiv);
+
+                currentElement = _currentElement;
+
+                setUpVm(_date);
+
+                ko.applyBindings(calVm, $('#contentDiv')[0]);
+            }
+        });
+
+        $(document).on('click', function (e) {
+            if ($(e.target).closest('.calContainer').length === 0 && !$(currentElement).is(":focus")) {
+                $('#contentDiv').remove();
+            }
+        });
+
+        //$('input[data-calendar]').on('focusout', function () {
+            
+        //    if (!$(".calContainer, .calWrapperHeaderDiv, .calHeaderDay, .calDayText, .calWrapperDiv, .calDay, .calDayText").is(":focus"))
+        //        $('#contentDiv').remove();
+        //});
+
+        
+
+        
     });
 
 })(jQuery, ko);
