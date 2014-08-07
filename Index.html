@@ -16,7 +16,11 @@
         <br />
 
         <div class="calContainer">
-            <div data-bind="text: selectedDateString"></div>
+			<div class="monthDiv">
+				<button data-bind="click: prevMonth" class="monthDivItem prevMonth"><<</button>				
+				<div data-bind="text: selectedDateString" class="monthDivItem monthText"></div>
+				<button data-bind="click: nextMonth" class="monthDivItem nextMonth">>></button>				
+			</div>
             <div class="calWrapperHeaderDiv" data-bind="foreach: dayOfWeekArray">
                 <div class="calHeaderDay">
                     <div class="calDayText" data-bind="text: $data"></div>

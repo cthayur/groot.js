@@ -83,7 +83,24 @@
             monthArray: ko.observableArray(),
             dayOfWeekArray: dayOfWeekArray,
             selectedDateString: ko.observable(),
-            selectedShortDate: ko.observable()
+            selectedShortDate: ko.observable(),
+			selectedDate: ko.observable(),
+			nextMonth: function() {
+				var _currentDate = this.selectedDate();
+				_currentDate.setMonth(_currentDate.getMonth() + 1);
+				var _monthArray = getMonthArray(_currentDate.getFullYear(), _currentDate.getMonth() + 1, calVm);
+				
+				 calVm.monthArray(_monthArray);
+				 calVm.selectedDateString(monthList[(_currentDate.getMonth() + 1)] + " "  + _currentDate.getFullYear());
+			},
+			prevMonth: function() {
+				var _currentDate = this.selectedDate();
+				_currentDate.setMonth(_currentDate.getMonth() - 1);
+				var _monthArray = getMonthArray(_currentDate.getFullYear(), _currentDate.getMonth() + 1, calVm);
+				
+				 calVm.monthArray(_monthArray);
+				 calVm.selectedDateString(monthList[(_currentDate.getMonth() + 1)] + " "  + _currentDate.getFullYear());
+			}
         };
 
         dayVm = function (date, month, year, isActive, parent) {
@@ -101,7 +118,6 @@
 
             _self.selectDate = function (data) {
                 parent.selectedShortDate(_self.shortDate);
-                parent.selectedDateString(monthList[_self.month] + " " + _self.date + ", " + _self.year);
 
                 currentElement.val(_self.month + "/" + _self.date + "/" + _self.year);
             };
@@ -112,8 +128,9 @@
         setUpVm = function (currentDate) {
             var _monthArray = getMonthArray(currentDate.getFullYear(), currentDate.getMonth() + 1, calVm);
             calVm.selectedShortDate("" + currentDate.getFullYear() + (currentDate.getMonth() + 1) + currentDate.getDate());
-            calVm.selectedDateString(monthList[(currentDate.getMonth() + 1)] + " " + currentDate.getDate() + ", " + currentDate.getFullYear());
+            calVm.selectedDateString(monthList[(currentDate.getMonth() + 1)] + " "  + currentDate.getFullYear());
             calVm.monthArray(_monthArray);
+			calVm.selectedDate(currentDate);
         };
 
         $('input[data-calendar]').on('focus', function () {
@@ -137,17 +154,7 @@
             if ($(e.target).closest('.calContainer').length === 0 && !$(currentElement).is(":focus")) {
                 $('#contentDiv').remove();
             }
-        });
-
-        //$('input[data-calendar]').on('focusout', function () {
-            
-        //    if (!$(".calContainer, .calWrapperHeaderDiv, .calHeaderDay, .calDayText, .calWrapperDiv, .calDay, .calDayText").is(":focus"))
-        //        $('#contentDiv').remove();
-        //});
-
-        
-
-        
+        });        
     });
 
 })(jQuery, ko);
