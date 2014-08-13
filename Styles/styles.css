@@ -1,6 +1,13 @@
-﻿.monthDiv {
+#contentDiv {
+    display: block;
+    max-width: 225px;
+    position: absolute;
+    z-index: 10180;
+}
+
+.monthDiv {
 	text-align: center;
-	background-color: #e9e9e9;
+	background-color: black;
 	margin-bottom: 5px;
 	margin-top: 5px;
 	min-height: 30px;
@@ -21,17 +28,18 @@
 }
 
 .monthText {
-	margin-top: 5px;	
+	margin-top: 5px;
+    color: white
 }
 
 .calContainer {
     max-width: 225px;
-	border: 1px solid #808080;
-	background-color: #e9e9e9;
+	border: 1px solid black;
+	background-color: black;
 }
 .calWrapperHeaderDiv {
     max-width: 215px;
-    background-color: whitesmoke;
+    background-color: black;
     padding: 5px;
 
 }
@@ -48,7 +56,7 @@
 
 .calWrapperDiv {
     max-width: 215px;    
-    background-color: whitesmoke;
+    background-color: black;
     padding: 5px;
 
 }
@@ -56,11 +64,11 @@
 .calDay {
     height: 30px;
     width: 30px;
-    color: black;
+    color: white;
     display: inline-block;
     margin-bottom: 2px;
     margin-right: -3px;
-    background-color: #e9e9e9;
+    background-color: black;
     cursor: pointer;
 }
 
@@ -91,7 +99,7 @@
 }
 
 .calDayText.active {
-    color: black;
+    color: white;
 }
 
 
